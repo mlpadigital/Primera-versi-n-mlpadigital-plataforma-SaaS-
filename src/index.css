@@ -1,0 +1,105 @@
+/* src/index.css*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos personalizados */
+.glass-effect {
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.neon-glow {
+  box-shadow: 0 0 10px rgba(138, 43, 226, 0.6), 0 0 20px rgba(138, 43, 226, 0.4);
+}
+/* Variables de color */
+:root {
+  --background: #020617; /* slate-950 */
+  --foreground: #eef2f9; /* slate-100 */
+
+  --card: #020617;
+  --card-foreground: #eef2f9;
+
+  --popover: #020617;
+  --popover-foreground: #eef2f9;
+
+  --primary: #4f46e5; /* indigo-600 */
+  --primary-foreground: #eef2f9;
+
+  --secondary: #ff55c3; /* fuchsia-500 */
+  --secondary-foreground: #020617;
+
+  --muted: #111827; /* slate-900 */
+  --muted-foreground: #a1a1aa; /* zinc-400 */
+
+  --accent: #111827;
+  --accent-foreground: #eef2f9;
+
+  --destructive: #e5484d;
+  --destructive-foreground: #eef2f9;
+
+  --border: #202a41; /* slate-800 */
+  --input: #202a41;
+  --ring: #4f46e5;
+
+  --radius: 0.5rem;
+  --accent-color: #ff55c3;
+}
+
+/* Reset y base */
+* {
+  box-sizing: border-box;
+  border-color: var(--border);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-feature-settings: "rlig" 1, "calt" 1;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Efecto glass */
+/*.glass-effect {
+  background: rgba(30, 41, 59, 0.5); /* slate-800/50 */
+ /* backdrop-filter: blur(12px);
+  border: 1px solid rgba(51, 65, 85, 0.7); /* slate-700/70 */
+ /* border-radius: var(--radius);
+}*/
+
+/* Glow neón */
+/*.neon-glow {
+  box-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
+}*/
+
+/* Animación flotante */
+.floating-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+/* Glow pulsante */
+.pulse-glow {
+  animation: pulse-glow 2.5s infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(79, 70, 229, 0.4); /* primary */
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(79, 70, 229, 0.8);
+  }
+}
