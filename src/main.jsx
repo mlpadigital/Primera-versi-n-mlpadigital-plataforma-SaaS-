@@ -7,7 +7,10 @@ import './index.css';
 import { AuthProvider } from './context/AuthProvider';
 import { Toaster } from './components/ui/toaster';
 import { CartProvider } from './hooks/useCart';
+import { ToastContainer } from 'react-toastify';
 
+
+<ToastContainer position="top-right" autoClose={3000} />
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
