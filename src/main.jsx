@@ -1,27 +1,30 @@
 //src/main.jsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-import './index.css';
-import { AuthProvider } from './context/AuthProvider';
-import { Toaster } from './components/ui/toaster';
-import { CartProvider } from './hooks/useCart';
-import { ToastContainer } from 'react-toastify';
 
+// Detectar subdominio
+const subdomain = window.location.hostname.split('.')[0];
 
-<ToastContainer position="top-right" autoClose={3000} />
-
+// Cargar la app correspondiente
+let AppEntry;
+switch (subdomain) {
+  case 'admin':
+    AppEntry = require('./apps/admin/index.jsx').default;
+    break;
+  case 'auth':
+    AppEntry = require('./apps/auth/index.jsx').default;
+    break;
+  case 'www':
+  case 'mlpadigital':
+  case '':
+    AppEntry = require('./apps/public/index.jsx').default;
+    break;
+  default:
+    AppEntry = () => <div>Subdominio no reconocido: {subdomain}</div>;
+}
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <CartProvider>
-          <App />
-          <Toaster />
-        </CartProvider>
-      </AuthProvider>
-    </BrowserRouter>
+    <AppEntry />
   </React.StrictMode>
 );

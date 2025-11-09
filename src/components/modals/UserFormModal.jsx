@@ -1,3 +1,4 @@
+// src/components/modals/UserFormModal.jsx
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -27,7 +28,7 @@ export default function UserFormModal({ isOpen, onClose, selectedPlan }) {
 
   const onSubmit = async (data) => {
     try {
-      await axios.post('http://localhost:3000/api/clientes/crear', data);
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/clientes/crear`, data);
       toast.success('🎉 Cliente creado correctamente');
       reset();
       onClose();
