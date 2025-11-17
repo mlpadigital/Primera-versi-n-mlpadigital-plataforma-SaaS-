@@ -1,16 +1,52 @@
-// src/apps/public/pages/SuccessPage.jsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion as Motion } from 'framer-motion';
-import { Button } from '../../../shared/components/ui/button';
+import { Button } from '../../shared/components/ui/button';
 import { CheckCircle, ArrowRight } from 'lucide-react';
-import SuccessMessage from '../../../shared/components/SuccessMessage';
-
-
-
+import SuccessMessage from '../../shared/components/SuccessMessage';
+import axios from 'axios';
 
 const SuccessPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const frecuencia = params.get('frecuencia');
+    const dias = frecuencia === 'mensual' ? 30
+                : frecuencia === 'trimestral' ? 90
+                : frecuencia === 'anual' ? 365
+                : 30;
+
+    const fecha_inicio = new Date();
+    const proximo_pago = new Date(fecha_inicio);
+    proximo_pago.setDate(proximo_pago.getDate() + dias);
+
+    const cliente = {
+      nombre: params.get('nombre'),
+      email: params.get('email'),
+      tienda: params.get('tienda'),
+      tipo: params.get('tipo'),
+      frecuencia,
+      moneda: params.get('moneda'),
+      pais: params.get('pais') || 'Argentina',
+      telefono: params.get('telefono') || '',
+      estado_pago: 'pagado',
+      plan_status: 'activo',
+      fecha_inicio,
+      proximo_pago,
+    };
+
+    axios.post(`${import.meta.env.VITE_API_URL}/api/clientes/crear`, cliente)
+      .then(() => {
+        navigate(`/usuario/${cliente.tienda}`);
+      })
+      .catch((err) => {
+        console.error('Error al guardar cliente:', err);
+      });
+  }, []);
+
   return (
     <>
       <Helmet>
@@ -25,11 +61,11 @@ const SuccessPage = () => {
         className="flex-grow container mx-auto px-6 py-12 flex items-center justify-center"
       >
         <SuccessMessage
-        title="¡Pago Exitoso!"
-        description="Gracias por tu compra. Hemos recibido tu pedido y lo estamos procesando."
-        ctaText="Seguir Comprando"
-        ctaLink="/store"
-/>
+          title="¡Pago Exitoso!"
+          description="Gracias por tu compra. Hemos recibido tu pedido y lo estamos procesando."
+          ctaText="Seguir Comprando"
+          ctaLink="/store"
+        />
         <div className="text-center glass-effect p-10 rounded-2xl shadow-2xl max-w-2xl">
           <Motion.div
             initial={{ scale: 0 }}
@@ -38,7 +74,7 @@ const SuccessPage = () => {
           >
             <CheckCircle className="mx-auto h-24 w-24 text-green-400" />
           </Motion.div>
-          <Motion.h1 
+          <Motion.h1
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
@@ -46,7 +82,7 @@ const SuccessPage = () => {
           >
             ¡Pago Exitoso!
           </Motion.h1>
-          <Motion.p 
+          <Motion.p
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.6 }}

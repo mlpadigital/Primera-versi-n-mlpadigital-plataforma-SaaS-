@@ -1,3 +1,5 @@
+import { motion as Motion } from 'framer-motion';
+
 export default function TestimonialsSection() {
   const testimonials = [
     {
@@ -23,27 +25,45 @@ export default function TestimonialsSection() {
   return (
     <section className="py-20 px-6 md:px-16 lg:px-32 bg-[#0f0c29] text-white">
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-5xl font-bold neon-glow pulse-glow mb-4">
+        <Motion.h2
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-3xl md:text-5xl font-bold neon-glow pulse-glow mb-4"
+        >
           Historias de Éxito
-        </h2>
-        <p className="text-slate-300 text-lg floating-animation">
+        </Motion.h2>
+        <Motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-slate-300 text-lg floating-animation"
+        >
           Emprendedores, resellers y agencias ya están vendiendo con estilo. Esto es lo que dicen.
-        </p>
+        </Motion.p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {testimonials.map((t, index) => (
-          <div
+          <Motion.article
             key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: index * 0.2 }}
             className="glass-effect rounded-xl p-6 shadow-xl border border-slate-800 hover:scale-105 transition duration-300 neon-glow text-center"
           >
             <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border-2 border-fuchsia-500 floating-animation">
-              <img src={t.image} alt={t.name} className="w-full h-full object-cover" />
+              <img
+                src={t.image}
+                alt={`Foto de ${t.name}`}
+                className="w-full h-full object-cover"
+                onError={(e) => (e.currentTarget.style.display = 'none')}
+              />
             </div>
-            <p className="italic text-slate-300 mb-4">“{t.quote}”</p>
+            <blockquote className="italic text-slate-300 mb-4">“{t.quote}”</blockquote>
             <h3 className="text-lg font-semibold">{t.name}</h3>
             <p className="text-sm text-slate-400">{t.role}</p>
-          </div>
+          </Motion.article>
         ))}
       </div>
     </section>

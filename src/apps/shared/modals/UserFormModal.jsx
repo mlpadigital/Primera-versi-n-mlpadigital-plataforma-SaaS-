@@ -1,4 +1,5 @@
-// src/components/modals/UserFormModal.jsx
+// src/apps/shared/modals/UserFormModal.jsx
+import React from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -7,12 +8,21 @@ import { motion as Motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+const precios = {
+  mensual: { ars: 9000, usd: 10, eur: 10 },
+  trimestral: { ars: 25000, usd: 27, eur: 27 },
+  anual: { ars: 95000, usd: 100, eur: 100 },
+};
 
 const schema = yup.object().shape({
   nombre: yup.string().required('Nombre obligatorio'),
   email: yup.string().email('Email inválido').required('Email obligatorio'),
   tienda: yup.string().required('Nombre de tienda obligatorio'),
+  pais: yup.string().required('País obligatorio'),
+  telefono: yup.string().required('Teléfono obligatorio'),
   tipo: yup.string().required('Seleccioná un tipo de cliente'),
+  frecuencia: yup.string().required('Seleccioná una frecuencia de pago'),
+  moneda: yup.string().required('Seleccioná una moneda'),
 });
 
 export default function UserFormModal({ isOpen, onClose, selectedPlan }) {
@@ -20,15 +30,28 @@ export default function UserFormModal({ isOpen, onClose, selectedPlan }) {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
     reset,
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: { tipo: selectedPlan || '' },
+    defaultValues: {
+      tipo: selectedPlan || 'Emprendedor',
+      frecuencia: 'mensual',
+      moneda: 'ars',
+      pais: 'Argentina',
+    },
   });
+
+  const frecuencia = watch('frecuencia');
+  const moneda = watch('moneda');
+  const precio = precios[frecuencia]?.[moneda] || 0;
 
   const onSubmit = async (data) => {
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/clientes/crear`, data);
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/clientes/crear`, {
+        ...data,
+        precio,
+      });
       toast.success('🎉 Cliente creado correctamente');
       reset();
       onClose();
@@ -66,6 +89,16 @@ export default function UserFormModal({ isOpen, onClose, selectedPlan }) {
           </div>
 
           <div>
+            <input {...register('pais')} placeholder="País" className="input" />
+            <p className="text-red-400 text-sm mt-1">{errors.pais?.message}</p>
+          </div>
+
+          <div>
+            <input {...register('telefono')} placeholder="Teléfono" className="input" />
+            <p className="text-red-400 text-sm mt-1">{errors.telefono?.message}</p>
+          </div>
+
+          <div>
             <select {...register('tipo')} className="input">
               <option value="">Seleccionar tipo de cliente</option>
               <option value="Emprendedor">Emprendedor</option>
@@ -75,8 +108,30 @@ export default function UserFormModal({ isOpen, onClose, selectedPlan }) {
             <p className="text-red-400 text-sm mt-1">{errors.tipo?.message}</p>
           </div>
 
+          <div>
+            <select {...register('frecuencia')} className="input">
+              <option value="mensual">Mensual</option>
+              <option value="trimestral">Trimestral</option>
+              <option value="anual">Anual</option>
+            </select>
+            <p className="text-red-400 text-sm mt-1">{errors.frecuencia?.message}</p>
+          </div>
+
+          <div>
+            <select {...register('moneda')} className="input">
+              <option value="ars">ARS</option>
+              <option value="usd">USD</option>
+              <option value="eur">EUR</option>
+            </select>
+            <p className="text-red-400 text-sm mt-1">{errors.moneda?.message}</p>
+          </div>
+
+          <div className="text-lg font-semibold text-green-400 text-center">
+            Precio: {moneda.toUpperCase()} ${precio}
+          </div>
+
           <button type="submit" className="btn-primary w-full">
-            Crear cuenta
+            Continuar al pago
           </button>
         </form>
 

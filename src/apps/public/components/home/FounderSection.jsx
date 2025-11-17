@@ -1,3 +1,4 @@
+// src/apps/public/components/home/FounderSection.jsx
 export default function FounderSection() {
   return (
     <section className="py-20 px-6 md:px-16 lg:px-32 bg-[#0f0c29] text-white">

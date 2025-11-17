@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { motion as Motion } from 'framer-motion';
-import SuccessMessage from '../../../shared/components/SuccessMessage';
+import SuccessMessage from '../../shared/components/SuccessMessage';
 
 const RegistrationSuccessPage = () => {
   return (

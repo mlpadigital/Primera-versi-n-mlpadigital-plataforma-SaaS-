@@ -39,6 +39,8 @@ const AdminStoreManagementPage = () => {
           className="p-6"
         >
           <h1 className="text-3xl font-bold text-white mb-6">Tiendas Activas</h1>
+          <h1 className="text-white text-3xl">Gestión de Usuarios</h1>;
+
 
           {loading ? (
             <p className="text-indigo-300">Cargando tiendas...</p>

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Input } from '../../../shared/ui/input';
-import { Button } from '../../../shared/ui/button';
+import Input from '../../shared/components/ui/input';
+import { Button } from '../../shared/components/ui/button';
 import { Eye, EyeOff } from 'lucide-react';
 
 const PasswordInput = ({

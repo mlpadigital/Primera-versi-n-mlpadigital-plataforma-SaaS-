@@ -1,27 +1,30 @@
-import React from 'react';
+// src/apps/admin/components/AdminSidebar.jsx
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, Store, CreditCard, Settings } from 'lucide-react';
+import { Users, Store, CreditCard, Settings, PlusCircle } from 'lucide-react';
 
 const links = [
-  { to: '/', label: 'Dashboard', icon: <LayoutDashboard className="h-5 w-5" /> },
-  { to: '/users', label: 'Usuarios', icon: <Users className="h-5 w-5" /> },
-  { to: '/stores', label: 'Tiendas', icon: <Store className="h-5 w-5" /> },
-  { to: '/payments', label: 'Pagos', icon: <CreditCard className="h-5 w-5" /> },
-  { to: '/settings', label: 'Configuración', icon: <Settings className="h-5 w-5" /> },
+  { to: '/admin', label: 'Dashboard', icon: <Settings /> },
+  { to: '/admin/usuarios', label: 'Usuarios', icon: <Users /> },
+  { to: '/admin/tiendas', label: 'Tiendas', icon: <Store /> },
+  { to: '/admin/pagos', label: 'Pagos', icon: <CreditCard /> },
+  { to: '/admin/configuracion', label: 'Configuración', icon: <Settings /> },
+  { to: '/admin/nuevo-cliente', label: 'Crear Cliente', icon: <PlusCircle /> },
 ];
 
-const AdminSidebar = () => {
+export default function AdminSidebar() {
   return (
-    <aside className="w-64 bg-black/30 backdrop-blur-md p-6 border-r border-white/10">
-      <h2 className="text-2xl font-bold mb-8">mlpadigital Admin</h2>
-      <nav className="flex flex-col gap-4">
+    <aside className="fixed top-0 left-0 h-screen w-64 bg-gradient-to-br from-[#0f0f0f] via-[#1f1f1f] to-[#2f2f2f] backdrop-blur-lg shadow-xl border-r border-gray-800 z-50">
+      <div className="p-6 text-white text-2xl font-bold tracking-wide">mlpadigital</div>
+      <nav className="flex flex-col gap-4 px-4 mt-6">
         {links.map(({ to, label, icon }) => (
           <NavLink
             key={to}
             to={to}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
-                isActive ? 'bg-white/10 text-yellow-400' : 'hover:bg-white/5'
+              `flex items-center gap-3 px-4 py-2 rounded-lg transition-all ${
+                isActive
+                  ? 'bg-indigo-600 text-white shadow-lg'
+                  : 'text-indigo-300 hover:bg-indigo-800 hover:text-white'
               }`
             }
           >
@@ -32,6 +35,4 @@ const AdminSidebar = () => {
       </nav>
     </aside>
   );
-};
-
-export default AdminSidebar;
+}

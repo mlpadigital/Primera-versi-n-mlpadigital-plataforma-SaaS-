@@ -1,9 +1,27 @@
-import React from 'react';
+// src/apps/public/pages/StorePage.jsx
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion as Motion } from 'framer-motion';
-import ProductsList from '../../components/ProductsList'; // o shared/components si lo usás en más de un subdominio
+import ProductsList from '../../shared/components/ProductsList';
+import AIChatbot from '../../shared/components/AIChatbot';
 
 const StorePage = () => {
+  const [storeData, setStoreData] = useState(null);
+
+  useEffect(() => {
+    const fetchStore = async () => {
+      try {
+        const response = await fetch('https://api.mlpadigital.com/store/public-info');
+        const data = await response.json();
+        setStoreData(data);
+      } catch (err) {
+        console.error('Error al cargar datos de la tienda:', err);
+      }
+    };
+
+    fetchStore();
+  }, []);
+
   return (
     <>
       <Helmet>
@@ -39,6 +57,10 @@ const StorePage = () => {
 
         <ProductsList />
       </Motion.main>
+
+      {storeData?.supportEnabled && (
+        <AIChatbot storeId={storeData.slug} accentColor="#FDE047" primaryColor="#4338CA" />
+      )}
     </>
   );
 };

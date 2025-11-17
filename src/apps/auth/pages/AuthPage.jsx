@@ -3,11 +3,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import { motion as Motion } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, User, Loader2, Edit } from 'lucide-react';
 
-import { Button } from '../../../shared/ui/button';
-import { Input } from '../../../shared/ui/input';
-import { Label } from '../../../shared/ui/label';
+import { Button } from '../../shared/components/ui/button';
+import { Input } from '../../shared/components/ui/input';
+import { Label } from '../../shared/components/ui/label';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../../../shared/ui/card';
-import { useToast } from '../../../shared/ui/use-toast';
+import { useToast } from '../../shared/components/ui/use-toast';
 import { useAuth } from '../hooks/useAuth';
 import PasswordInput from '../components/PasswordInput';
 

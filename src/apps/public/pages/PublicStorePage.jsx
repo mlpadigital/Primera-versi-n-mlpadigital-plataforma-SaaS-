@@ -1,8 +1,12 @@
+// src/apps/public/pages/PublicStorePage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Loader2 } from 'lucide-react';
-import StorePreview from '../../app/pages/dashboard/design/StorePreview';
+import StorePreview from '../../shared/components/dashboard/design/StorePreview';
+import Input from '../../shared/components/ui/input';
+import {Select} from '../../shared/components/ui/select';
+import GlowButton from '../../shared/components/ui/GlowButton';
 
 const initialDesignSettings = {
   template: 'template1',
@@ -74,6 +78,12 @@ const PublicStorePage = () => {
   const [designSettings, setDesignSettings] = useState(null);
   const [storeId, setStoreId] = useState(null);
   const [error, setError] = useState(null);
+  const [formData, setFormData] = useState({
+    nombre: '',
+    email: '',
+    tienda: slug || '',
+    tipo: 'Emprendedor',
+  });
 
   useEffect(() => {
     const fetchStoreData = async () => {
@@ -123,6 +133,22 @@ const PublicStorePage = () => {
     fetchStoreData();
   }, [slug]);
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/pagos/preferencia`, formData);
+      const { init_point } = response.data;
+      window.location.href = init_point;
+    } catch (error) {
+      console.error('Error al generar preferencia de pago:', error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gray-900 text-white">
@@ -153,7 +179,23 @@ const PublicStorePage = () => {
     );
   }
 
-  return <StorePreview designSettings={designSettings} storeId={storeId} />;
+  return (
+    <div className="min-h-screen bg-gray-950 text-white">
+      <StorePreview designSettings={designSettings} storeId={storeId} />
+
+      <form onSubmit={handleSubmit} className="max-w-xl mx-auto mt-12 p-6 bg-glass rounded-xl shadow-xl">
+        <h2 className="text-2xl font-bold mb-4 text-purple-300">Activá tu tienda</h2>
+        <Input name="nombre" placeholder="Nombre completo" onChange={handleChange} required />
+        <Input name="email" placeholder="Email" onChange={handleChange} required />
+        <Select name="tipo" onChange={handleChange} value={formData.tipo}>
+          <option value="Emprendedor">Emprendedor</option>
+          <option value="Escalable">Escalable</option>
+          <option value="Reseller PRO">Reseller PRO</option>
+        </Select>
+        <GlowButton type="submit" className="mt-4 w-full">Continuar al pago</GlowButton>
+      </form>
+    </div>
+  );
 };
 
 export default PublicStorePage;

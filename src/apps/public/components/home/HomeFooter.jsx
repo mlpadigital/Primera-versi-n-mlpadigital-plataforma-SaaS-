@@ -1,3 +1,4 @@
+// src/apps/public/components/home/HomeFooter.jsx
 import React from 'react';
 
 const HomeFooter = () => {

@@ -1,6 +1,7 @@
+// src/apps/public/components/home/HeroSection.jsx
 import { useState } from 'react';
-import GlowButton from '../ui/GlowButton';
-import UserFormModal from '../modals/UserFormModal';
+import GlowButton from '../../../shared/components/ui/GlowButton';
+import UserFormModal from '../../../shared/modals/UserFormModal';
 
 export default function HeroSection() {
   const [showModal, setShowModal] = useState(false);

@@ -2,15 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion as Motion } from 'framer-motion';
 import axios from 'axios';
-import { Eye, EyeOff, Mail, Lock, User, Store, Phone, MapPin, Globe, Loader2, ArrowLeft, CreditCard } from 'lucide-react';
+import {
+  Mail, Lock, User, Store, Phone, MapPin, Globe,
+  Loader2, ArrowLeft, CreditCard
+} from 'lucide-react';
 
-import { Button } from '../../../shared/components/ui/button';
-import { Input } from '../../../shared/components/ui/input';
-import { Label } from '../../../shared/components/ui/label';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../../../shared/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../shared/components/ui/select';
-import { useToast } from '../../../shared/components/ui/use-toast';
-import PasswordInput from '../components/PasswordInput';
+import { Button } from '../../shared/components/ui/button';
+import Input from '../../shared/components/ui/input';
+import { Label } from '../../shared/components/ui/label';
+import {
+  Card, CardHeader, CardTitle, CardDescription, CardContent
+} from '../../shared/components/ui/card';
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue
+} from '../../shared/components/ui/select';
+import { useToast } from '../../shared/components/ui/use-toast';
+import PasswordInput from '../components/PasswordImput';
 
 const RegisterPage = () => {
   const { toast } = useToast();
@@ -66,10 +73,18 @@ const RegisterPage = () => {
       return;
     }
 
+    const payload = {
+      email: formData.email,
+      password: formData.password,
+      nombre: `${formData.firstName} ${formData.lastName}`,
+      tienda: formData.storeName,
+      tipo: 'Emprendedor' // Podés cambiar esto o hacerlo dinámico con un Select
+    };
+
     setLoading(true);
 
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/clientes/crear`, formData);
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, payload);
       toast({
         title: "¡Registro Exitoso!",
         description: "Cliente creado correctamente en MongoDB.",
@@ -157,14 +172,14 @@ const RegisterPage = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword"><Lock className="mr-2 h-4 w-4 text-yellow-400" />Confirmar Contraseña</Label>
-                <PasswordInput
+                                <PasswordInput
                   id="confirmPassword"
                   name="confirmPassword"
                   placeholder="Confirma tu contraseña"
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   showPassword={showConfirmPassword}
-                  toggleShowPassword={() =>setShowConfirmPassword(p => !p)}
+                  toggleShowPassword={() => setShowConfirmPassword(p => !p)}
                   disabled={loading || isRateLimited}
                 />
               </div>
@@ -176,12 +191,19 @@ const RegisterPage = () => {
                 className="w-full sm:w-auto bg-yellow-400 text-purple-700 hover:bg-yellow-500 font-semibold text-lg py-3 flex-grow"
                 disabled={loading || isRateLimited}
               >
-                {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <CreditCard className="mr-2 h-5 w-5" />}
+                {loading ? (
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                ) : (
+                  <CreditCard className="mr-2 h-5 w-5" />
+                )}
                 {isRateLimited ? 'Espera un minuto' : 'Crear Cuenta y Continuar'}
               </Button>
 
               <Button asChild variant="outline" className="w-full sm:w-auto text-white hover:bg-white/10">
-                <Link to="/auth"><ArrowLeft className="mr-2 h-4 w-4" /> Volver a Iniciar Sesión</Link>
+                <Link to="/auth">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Volver a Iniciar Sesión
+                </Link>
               </Button>
             </div>
           </form>
@@ -192,4 +214,3 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
- 

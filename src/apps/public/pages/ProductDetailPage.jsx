@@ -1,3 +1,4 @@
+// src/apps/public/pages/ProductDetailPage.jsx
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams, Link } from 'react-router-dom';
@@ -7,7 +8,7 @@ const ProductDetailPage = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [product, setProduct] = useState(null);
+  //const [product, setProduct] = useState(null);//
 
   useEffect(() => {
     const fetchProduct = async () => {
